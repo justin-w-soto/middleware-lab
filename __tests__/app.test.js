@@ -5,21 +5,28 @@ const app = require ('../lib/app.js');
 
 /* CREATE TESTS FOR ALL CRUD ROUTES*/
 
-describe('word api test routes', () => {
+describe('api routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
 
-  afterAll(() => {
-    pool.end();
-  });
-
-  it('GET', async () => {
-    const controller = await model.insert(something);
+  
+  it('POSTS a new character to table', async () => {
+    
     return request(app)
-      .get(`/`)
-      .then((res) => {
-        expect(res.body).toEqual(controller);
-      })
+    .post('/api/v1/character/1')
+    .send({ 
+    "id": 1,
+    "name": "Rick Sanchez",
+    "status": "Alive",
+    "species": "Human"
+    })
+    .then((res) => {
+      expect(res.body).toEqual({ id: '1', name: 'Rick Sanchez', status: 'Alive', species: 'Human' });
+    })
   })
+});
+
+afterAll(() => {
+  pool.end();
 });

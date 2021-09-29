@@ -1,12 +1,10 @@
-DROP TABLE IF EXISTS /*Table name goes here*/
+DROP TABLE IF EXISTS character;    
 
-CREATE TABLE /*table name*/ (
+CREATE TABLE character (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    /*table name*/ VARCHAR(512) NOT NULL
+    name TEXT NOT NULL,
+    status TEXT NOT NULL,
+    species TEXT NOT NULL
 );
-
-INSERT INTO /*Table name*/ (some object that I have chosen from the api)
-    VALUES ($1);
-    [objectIchosefromapi.tablename];
 
 
