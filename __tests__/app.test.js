@@ -12,42 +12,80 @@ describe('api routes', () => {
   });
 
   
-  it('POSTS a new character to table', async () => {
+  it('POSTS a new character to table', () => {
     
     return request(app)
     .post('/api/v1/character/1')
     .send({ 
-    "id": 1,
-    "name": "Rick Sanchez",
-    "status": "Alive",
-    "species": "Human"
-    })
-    .then(res => {
-      expect(res.body).toEqual({ id: '1', name: 'Rick Sanchez', status: 'Alive', species: 'Human' });
-    })
-  })
-
-  it('GETS all character data', async () => {
-    const charChar = await service.getAllCharacterData({
-    "id": 1,
-    "name": "Rick Sanchez",
-    "status": "Alive",
-    "species": "Human"
-    })
-
-    const res = await request(app).get('/api/v1/character');
-    expect(res.body).toEqual(charChar);
-  })
-
-  it('GETS character by id', async () => {
-    const charById = await service.getCharacterById({
-      id: 1,
+      id: "1",
       name: "Rick Sanchez",
       status: "Alive",
       species: "Human"
     })
+    .then(res => {
+      expect(res.body).toEqual({
+         id: "1", 
+         name: 'Rick Sanchez', 
+         status: 'Alive', 
+         species: 'Human' 
+        });
+    })
   })
+
+  it('GETS all character data from table', () => {
+    return request(app)
+    .get('/api/v1/character')
+    .then(res => {
+      expect(res.body).toEqual([{
+        id: "1",
+        name: "Rick Sanchez",
+        status: "Alive",
+        species: "Human"
+        }])
+    })
+  });
+
+
+  it('GETS character by id', () => {
+    return request(app)
+      .get('/api/v1/character/:id')
+      .then(res => {
+        expect(res.body).toEqual({
+          id: "1",
+          name: "Rick Sanchez",
+          status: "Alive",
+          species: "Human"
+        })
+      })
+  });
   
+  it('it updates by id', () => {
+    return request(app)
+      .put('/api/v1/character/1')
+      .send({  
+      name: "Rick Sanchez",
+      status: "Alive",
+      species: "Human" 
+    })
+      .then(res => {
+        expect(res.body).toEqual({  
+        id: "1", 
+        name: "Rick Sanchez",
+        status: "Alive",
+        species: "Human"
+      });
+
+      });
+  });
+
+  it('it deletes characters by their id', () => {
+    return request(app)
+      .delete('/api/v1/character/1')
+      .then(res => {
+        expect(res.body).toEqual({});
+      });
+  });
+
   afterAll(() => {
     pool.end();
   });
