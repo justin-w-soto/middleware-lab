@@ -15,7 +15,7 @@ describe('api routes', () => {
   it('POSTS a new character to table', () => {
     
     return request(app)
-    .post('/api/v1/character/1')
+    .post('/api/v1/character/')
     .send({ 
       id: "1",
       name: "Rick Sanchez",
@@ -65,7 +65,8 @@ describe('api routes', () => {
       .send({  
       name: "Rick Sanchez",
       status: "Alive",
-      species: "Human" 
+      species: "Human"
+      
     })
       .then(res => {
         expect(res.body).toEqual({  
