@@ -22,7 +22,7 @@ describe('api routes', () => {
     "status": "Alive",
     "species": "Human"
     })
-    .then((res) => {
+    .then(res => {
       expect(res.body).toEqual({ id: '1', name: 'Rick Sanchez', status: 'Alive', species: 'Human' });
     })
   })
@@ -37,6 +37,15 @@ describe('api routes', () => {
 
     const res = await request(app).get('/api/v1/character');
     expect(res.body).toEqual(charChar);
+  })
+
+  it('GETS character by id', async () => {
+    const charById = await service.getCharacterById({
+      id: 1,
+      name: "Rick Sanchez",
+      status: "Alive",
+      species: "Human"
+    })
   })
   
   afterAll(() => {
