@@ -2,24 +2,53 @@ const pool = require ('../lib/utils/pool.js');
 const setup = require ('../data/setup.js');
 const request = require ('supertest');
 const app = require ('../lib/app.js');
+const service = require ('../lib/middleware/service.js');
 
 /* CREATE TESTS FOR ALL CRUD ROUTES*/
 
-describe('word api test routes', () => {
+describe('api routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
 
+  
+  it('POSTS a new character to table', async () => {
+    
+    return request(app)
+    .post('/api/v1/character/1')
+    .send({ 
+    "id": 1,
+    "name": "Rick Sanchez",
+    "status": "Alive",
+    "species": "Human"
+    })
+    .then(res => {
+      expect(res.body).toEqual({ id: '1', name: 'Rick Sanchez', status: 'Alive', species: 'Human' });
+    })
+  })
+
+  it('GETS all character data', async () => {
+    const charChar = await service.getAllCharacterData({
+    "id": 1,
+    "name": "Rick Sanchez",
+    "status": "Alive",
+    "species": "Human"
+    })
+
+    const res = await request(app).get('/api/v1/character');
+    expect(res.body).toEqual(charChar);
+  })
+
+  it('GETS character by id', async () => {
+    const charById = await service.getCharacterById({
+      id: 1,
+      name: "Rick Sanchez",
+      status: "Alive",
+      species: "Human"
+    })
+  })
+  
   afterAll(() => {
     pool.end();
   });
-
-  it('GET', async () => {
-    const controller = await model.insert(something);
-    return request(app)
-      .get(`/`)
-      .then((res) => {
-        expect(res.body).toEqual(controller);
-      })
-  })
 });
